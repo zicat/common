@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.newegg.ec</groupId>
-	<artifactId>newegg-common</artifactId>
+	<groupId>org.zicat</groupId>
+	<artifactId>common</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0.4-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<modules>
-		<module>ncommon-http-client</module>
-		<module>ncommon-utils</module>
-		<module>ncommon-log</module>
-        <module>ncommon-config</module>
-    </modules>
+		<module>common-http-client</module>
+		<module>common-utils</module>
+		<module>common-log</module>
+        <module>common-config</module>
+		<module>common-service</module>
+	</modules>
 
 	<dependencies>
 		<dependency>
@@ -21,26 +22,20 @@
 		</dependency>
 	</dependencies>
 
-	<distributionManagement>
-		<repository>
-			<id>ec_release</id>
-			<name>Internal Releasess</name>
-			<url>http://10.16.46.161:8888/nexus/content/repositories/releases/</url>
-			<uniqueVersion>false</uniqueVersion>
-		</repository>
-		<snapshotRepository>
-			<id>ec_snapshots</id>
-			<name>Internal snapshots</name>
-			<url>http://10.16.46.161:8888/nexus/content/repositories/ec_snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar.exclusions>**/*Configs.java</sonar.exclusions>
 	</properties>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -54,13 +49,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>**/*.properties</exclude>
-						<exclude>**/*.xml</exclude>
-						<exclude>**/*.conf</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
