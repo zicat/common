@@ -48,10 +48,22 @@ public class LocalConfigListenerEntry extends CommonEntry<LocalConfig<?>, Abstra
 	 */
 	public void listenerCallback() throws Exception {
 		
+		fileEmptyCheck(3);
 		long newDate = getLocalConfig().getFile().lastModified();
 		if(newDate > lasteditDate + delayTime) {
 			lasteditDate = newDate;
 			getLocalConfig().newInstanceAndNotify(getConfigListener());
+		}
+	}
+	
+	private void fileEmptyCheck(int tryCount) throws InterruptedException {
+		
+		int times = 0;
+		while(times < tryCount) {
+			if(getLocalConfig().getFile().length() != 0)
+				break;
+			times++;
+			Thread.sleep(2 * times);
 		}
 	}
 }
