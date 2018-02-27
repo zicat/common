@@ -3,7 +3,6 @@ package org.zicat.common.config.test.schema.xml;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import org.zicat.common.config.schema.xml.JAXBSchema;

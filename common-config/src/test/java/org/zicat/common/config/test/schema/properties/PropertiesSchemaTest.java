@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import org.zicat.common.config.schema.properties.PropertiesSchema;

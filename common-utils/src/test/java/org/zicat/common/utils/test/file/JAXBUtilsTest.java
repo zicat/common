@@ -1,7 +1,6 @@
 package org.zicat.common.utils.test.file;
 
 import java.io.IOException;
-import java.net.URL;
 
 import javax.xml.bind.JAXBException;
 
