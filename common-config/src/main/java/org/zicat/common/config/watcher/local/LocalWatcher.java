@@ -23,7 +23,7 @@ public class LocalWatcher implements Watcher<LocalConfig<?>> {
 	private Map<Path, LocalWatcherThread> pathContainer = new ConcurrentHashMap<>();
 	private long delayTime = -1;
 	
-	private static boolean isOSX = false;
+	public static boolean isOSX = false;
 	private Watcher<LocalConfig<?>> osxWatcherWrap = null;
 	
 	static {
@@ -37,7 +37,7 @@ public class LocalWatcher implements Watcher<LocalConfig<?>> {
 	public LocalWatcher(long delayTime) {
 		this.delayTime = delayTime;
 		if(isOSX) {
-			osxWatcherWrap = new CycleWatcher<>(100);
+			osxWatcherWrap = new CycleWatcher<>(1000);
 		}
 	}
 	
