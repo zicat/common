@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.zicat.common.config.LocalConfig;
 import org.zicat.common.config.listener.AbstractConfigListener;
+import org.zicat.common.config.watcher.CycleWatcher;
 import org.zicat.common.config.watcher.Watcher;
 import org.zicat.common.utils.io.IOUtils;
 
@@ -22,12 +23,22 @@ public class LocalWatcher implements Watcher<LocalConfig<?>> {
 	private Map<Path, LocalWatcherThread> pathContainer = new ConcurrentHashMap<>();
 	private long delayTime = -1;
 	
+	private static boolean isOSX = false;
+	private Watcher<LocalConfig<?>> osxWatcherWrap = null;
+	
+	static {
+		isOSX = System.getProperty("os.name").equals("Mac OS X");
+	}
+	
 	public LocalWatcher() {
 		this(-1);
 	}
 	
 	public LocalWatcher(long delayTime) {
 		this.delayTime = delayTime;
+		if(isOSX) {
+			osxWatcherWrap = new CycleWatcher<>(100);
+		}
 	}
 	
 	@Override
@@ -41,6 +52,10 @@ public class LocalWatcher implements Watcher<LocalConfig<?>> {
 		if(localConfig == null)
 			throw new NullPointerException("local config is null");
 		
+		if(isOSX) {
+			osxWatcherWrap.register(localConfig, listener);
+			return;
+		}
 		Path dir = localConfig.getDirPath();
 		synchronized (this) {
 			LocalWatcherThread localWatcherThread = pathContainer.get(dir);
@@ -71,6 +86,11 @@ public class LocalWatcher implements Watcher<LocalConfig<?>> {
 		if(config == null)
 			throw new NullPointerException("config is null");
 		
+		if(isOSX) {
+			osxWatcherWrap.unregister(config);
+			return;
+		}
+			
 		Path dir = config.getDirPath();
 		synchronized (this) {
 			LocalWatcherThread localWatcherThread = pathContainer.get(dir);
@@ -83,6 +103,10 @@ public class LocalWatcher implements Watcher<LocalConfig<?>> {
 	@Override
 	public synchronized void close() throws IOException {
 		
+		if(isOSX) {
+			osxWatcherWrap.close();
+			return;
+		}
 		for(Entry<Path, LocalWatcherThread> pathThreadEntry: pathContainer.entrySet()) {
 			IOUtils.closeQuietly(pathThreadEntry.getValue());
 		}
