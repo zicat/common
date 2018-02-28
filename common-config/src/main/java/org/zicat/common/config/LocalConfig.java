@@ -21,6 +21,7 @@ public class LocalConfig<T> extends AbstractConfig<URL, T> {
 	protected final String name;
 	protected final File file;
 	protected final InputStreamSchema<T> schema;
+	protected volatile long lasteditTime = -1;
 	
 	public LocalConfig(URL path, InputStreamSchema<T> schema, LocalConfig<T> parent) {
 		
@@ -112,5 +113,16 @@ public class LocalConfig<T> extends AbstractConfig<URL, T> {
 	 */
 	public final File getFile() {
 		return file;
+	}
+	
+	@Override
+	public boolean isModify() {
+		
+		long currentModify = file.lastModified();
+		if(currentModify != lasteditTime) {
+			lasteditTime = currentModify;
+			return true;
+		}
+		return false;
 	}
 }

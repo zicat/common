@@ -3,6 +3,8 @@ package org.zicat.common.config;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zicat.common.config.dao.zookeeper.CuratorZookeeperClient;
 import org.zicat.common.config.dao.zookeeper.ZookeeperClient;
 import org.zicat.common.config.schema.InputStreamSchema;
@@ -16,10 +18,13 @@ import org.zicat.common.utils.io.IOUtils;
  */
 public class ZookeeperConfig<T> extends AbstractConfig<String, T> {
 	
+	private static final Logger LOG = LoggerFactory.getLogger(ZookeeperConfig.class);
+	
 	protected final String zookeeperHost;
 	protected final String zookeeperPath;
 	protected final InputStreamSchema<T> schema;
 	protected final int timeout;
+	protected volatile long lasteditTime = -1;
 	
 	public ZookeeperConfig(String zookeeperHost, String zookeeperPath, int timeout, InputStreamSchema<T> schema, AbstractConfig<String, T> parentConfig) {
 		
@@ -93,4 +98,18 @@ public class ZookeeperConfig<T> extends AbstractConfig<String, T> {
 		return timeout;
 	}
 	
+	@Override
+	public boolean isModify() {
+		
+		try {
+			long currentModify = getZkClient().getModeMTime(zookeeperPath);
+			if(currentModify != lasteditTime) {
+				lasteditTime = currentModify;
+				return true;
+			}
+		} catch (Exception e) {
+			LOG.error("get mtime for path " + zookeeperPath + " error", e);
+		}
+		return false;
+	}
 }

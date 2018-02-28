@@ -105,4 +105,8 @@ public abstract class AbstractConfig<S, T> extends Config<S, T> {
 	protected <Stream> T createInstanceBySchema(Schema<Stream, T> schema, Stream stream) throws Exception {
 		return parentConfig == null? schema.unmarshal(stream): schema.unmarshal(parentConfig.getInstance(), stream);
 	}
+	
+	public boolean isModify() {
+		return true;
+	}
 }

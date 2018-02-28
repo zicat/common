@@ -45,7 +45,7 @@ def notifyBuild(String buildStatus = 'STARTED') {
   emailext (
       subject: subject,
       body: details,
-      to:'nesc-sh.mis.neweggec.developer.bigdata@newegg.com',
+      to:'zhangjundongli@126.com',
       recipientProviders: [[$class: 'DevelopersRecipientProvider']]
     )
 }

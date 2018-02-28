@@ -74,5 +74,11 @@ public class CuratorZookeeperClient implements ZookeeperClient {
 		nodeCache.start(true);
 		return nodeCache;
 	}
+
+	@Override
+	public long getModeMTime(String path) throws Exception {
+		PathUtils.validatePath(path);
+		return client.checkExists().forPath(path).getMtime();
+	}
 }
 

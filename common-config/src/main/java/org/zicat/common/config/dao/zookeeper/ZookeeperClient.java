@@ -37,6 +37,14 @@ public interface ZookeeperClient {
     void setData(String path, byte[] content) throws Exception;
     
     /**
+     * 
+     * @param path
+     * @return
+     * @throws Exception
+     */
+    long getModeMTime(String path) throws Exception;
+    
+    /**
      * create the node according to the path
      *
      * @param path
