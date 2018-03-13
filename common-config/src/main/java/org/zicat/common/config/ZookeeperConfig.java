@@ -26,7 +26,7 @@ public class ZookeeperConfig<T> extends AbstractConfig<String, T> {
 	protected final int timeout;
 	protected volatile long lasteditTime = -1;
 	
-	public ZookeeperConfig(String zookeeperHost, String zookeeperPath, int timeout, InputStreamSchema<T> schema, AbstractConfig<String, T> parentConfig) {
+	public ZookeeperConfig(String zookeeperHost, String zookeeperPath, int timeout, InputStreamSchema<T> schema, AbstractConfig<?, T> parentConfig) {
 		
 		super(parentConfig, zookeeperHost + zookeeperPath);
 		

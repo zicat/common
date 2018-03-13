@@ -23,9 +23,9 @@ public class LocalConfig<T> extends AbstractConfig<URL, T> {
 	protected final InputStreamSchema<T> schema;
 	protected volatile long lasteditTime = -1;
 	
-	public LocalConfig(URL path, InputStreamSchema<T> schema, LocalConfig<T> parent) {
+	public LocalConfig(URL path, InputStreamSchema<T> schema, AbstractConfig<?, T> parentConfig) {
 		
-		super(parent, path);
+		super(parentConfig, path);
 		
 		if(schema == null)
 			throw new NullPointerException("schema is null");
