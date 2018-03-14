@@ -111,4 +111,12 @@ public abstract class AbstractConfig<S, T> extends Config<S, T> {
 	 * @return
 	 */
 	public abstract boolean isModify();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public AbstractConfig<?, T> getParentConfig() {
+		return parentConfig;
+	}
 }
