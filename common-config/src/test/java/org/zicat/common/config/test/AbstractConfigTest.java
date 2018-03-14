@@ -18,6 +18,11 @@ import org.zicat.common.config.watcher.zookeeper.ZookeeperWatcher;
 
 import junit.framework.Assert;
 
+/**
+ * 
+ * @author zicat
+ *
+ */
 public class AbstractConfigTest {
 	
 	private static final InputStreamSchema<Properties> PROPERTIES_SCHEMA = InputStreamSchemaFactory.createPropertiesSchema(StandardCharsets.UTF_8);
