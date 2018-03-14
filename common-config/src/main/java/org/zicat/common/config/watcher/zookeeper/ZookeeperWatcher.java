@@ -42,6 +42,7 @@ public class ZookeeperWatcher implements Watcher<ZookeeperConfig<?>> {
 
 			config.newInstance();
 			final AbstractConfigListener<ZookeeperConfig<?>> realListener = listener == null ? DEFAULT_LISTENER: listener;
+			realListener.init(config);
 			Closeable nodeCache = config.getZkClient().addNodeChangedWatcher(config.getZookeeperPath(), () -> {
 				try {
 					config.newInstanceAndNotify(realListener);

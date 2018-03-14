@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.zicat.common.config.AbstractConfig;
-import org.zicat.common.config.listener.AbstractConfigListener;
+import org.zicat.common.config.listener.BaseConfigListener;
 import org.zicat.common.config.listener.LoggerConfigListener;
 
 /**
@@ -13,7 +13,7 @@ import org.zicat.common.config.listener.LoggerConfigListener;
  * @author lz31
  *
  */
-public class LoggerConfigListener2<C extends AbstractConfig<?, ?>> implements AbstractConfigListener<C> {
+public class LoggerConfigListener2<C extends AbstractConfig<?, ?>> extends BaseConfigListener<C> {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(LoggerConfigListener.class);
 	

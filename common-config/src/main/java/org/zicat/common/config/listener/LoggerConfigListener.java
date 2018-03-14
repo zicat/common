@@ -11,7 +11,7 @@ import org.zicat.common.config.AbstractConfig;
  * @ThreadSafe
  * @param <T>
  */
-public class LoggerConfigListener<C extends AbstractConfig<?, ?>> implements AbstractConfigListener<C> {
+public class LoggerConfigListener<C extends AbstractConfig<?, ?>> extends BaseConfigListener<C> {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(LoggerConfigListener.class);
 	

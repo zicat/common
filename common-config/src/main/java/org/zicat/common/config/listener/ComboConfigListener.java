@@ -10,7 +10,7 @@ import org.zicat.common.config.AbstractConfig;
  *
  * @param <C>
  */
-public class ComboConfigListener<C extends AbstractConfig<?, ?>> implements AbstractConfigListener<C> {
+public class ComboConfigListener<C extends AbstractConfig<?, ?>> extends BaseConfigListener<C> {
 	
 	private final List<AbstractConfigListener<C>> listeners;
 	

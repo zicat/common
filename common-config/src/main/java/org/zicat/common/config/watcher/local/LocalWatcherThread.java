@@ -69,6 +69,7 @@ public class LocalWatcherThread extends Thread implements Closeable {
 		synchronized (this) {
 			if(!localConfigContainer.containsKey(name)) {
 				localConfig.newInstance();
+				configListener.init(localConfig);
 				localConfigContainer.put(name, entry);
 			}
 		}

@@ -16,4 +16,11 @@ public interface AbstractConfigListener<C extends AbstractConfig<?, ?>> {
 	 * @throws Exception
 	 */
 	void onModify(C config) throws Exception;
+	
+	/**
+	 * only call ones
+	 * @param config
+	 * @throws Exception
+	 */
+	void init(C config) throws Exception;
 }

@@ -51,6 +51,7 @@ public class NoWatcher<T extends AbstractConfig<?, ?>> implements Watcher<T> {
 				listener = DEFAULT_LISTENER;
 
 			config.newInstance();
+			listener.init(config);
 			container.put(config, listener);
 		} finally {
 			writeLock.unlock();

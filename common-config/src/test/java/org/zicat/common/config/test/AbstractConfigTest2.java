@@ -11,7 +11,7 @@ import org.zicat.common.config.LocalConfig;
 import org.zicat.common.config.ZookeeperConfig;
 import org.zicat.common.config.dao.zookeeper.CuratorZookeeperClient;
 import org.zicat.common.config.dao.zookeeper.ZookeeperClient;
-import org.zicat.common.config.listener.AbstractConfigListener;
+import org.zicat.common.config.listener.BaseConfigListener;
 import org.zicat.common.config.schema.InputStreamSchema;
 import org.zicat.common.config.schema.InputStreamSchemaFactory;
 import org.zicat.common.config.test.watcher.FileUtils;
@@ -31,18 +31,21 @@ public class AbstractConfigTest2 {
 	private static final InputStreamSchema<Properties> PROPERTIES_SCHEMA = InputStreamSchemaFactory.createPropertiesSchema(StandardCharsets.UTF_8);
 	
 	@SuppressWarnings("unchecked")
-	private static final AbstractConfigListener<ZookeeperConfig<?>> listener = config -> {
-		
-		LocalConfig<Properties> localConfig = (LocalConfig<Properties>) config.getParentConfig();
-		ZookeeperConfig<Properties> zookeeperConfig = (ZookeeperConfig<Properties>) config;
-		Writer fw = null;
-		try {
-			File file = new File(localConfig.getSource().getFile());
-			fw = new FileWriter(file, false);
-			zookeeperConfig.getInstance().store(fw, "Flsuh Zookeeper Data to Local");
-			fw.flush();
-		} finally {
-			IOUtils.closeQuietly(fw);
+	private static final BaseConfigListener<ZookeeperConfig<?>> listener = new BaseConfigListener<ZookeeperConfig<?>>() {
+
+		@Override
+		public void onModify(ZookeeperConfig<?> config) throws Exception {
+			LocalConfig<Properties> localConfig = (LocalConfig<Properties>) config.getParentConfig();
+			ZookeeperConfig<Properties> zookeeperConfig = (ZookeeperConfig<Properties>) config;
+			Writer fw = null;
+			try {
+				File file = new File(localConfig.getSource().getFile());
+				fw = new FileWriter(file, false);
+				zookeeperConfig.getInstance().store(fw, "Flsuh Zookeeper Data to Local");
+				fw.flush();
+			} finally {
+				IOUtils.closeQuietly(fw);
+			}
 		}
 	};
 	
