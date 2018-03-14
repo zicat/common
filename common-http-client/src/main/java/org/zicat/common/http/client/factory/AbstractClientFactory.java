@@ -69,8 +69,8 @@ public abstract class AbstractClientFactory implements ClientFactory, Closeable 
     @Override
     public void destory(Client client) {
     	
-    	if(client == null)
-    		return;
+    		if(client == null)
+    			return;
 			
 		if(client != this.client) {
 			client.close();
@@ -86,7 +86,7 @@ public abstract class AbstractClientFactory implements ClientFactory, Closeable 
      */
     private void shutdownExecutorService() {
     	
-    	if(executorService != null) {
+    		if(executorService != null) {
             executorService.shutdown();
             executorService = null;
         }
