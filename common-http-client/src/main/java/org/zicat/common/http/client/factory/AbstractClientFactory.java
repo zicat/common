@@ -38,8 +38,11 @@ public abstract class AbstractClientFactory implements ClientFactory, Closeable 
     @Override
     public Client createClient() {
     	
-        ExecutorService executorService = aSynHttpThreadCount > 0? Executors.newFixedThreadPool(aSynHttpThreadCount): Executors.newSingleThreadExecutor();
-        ClientBuilder builder = ClientBuilder.newBuilder().executorService(executorService);
+        ExecutorService executorService = aSynHttpThreadCount > 0? Executors.newFixedThreadPool(aSynHttpThreadCount): null;
+        ClientBuilder builder = ClientBuilder.newBuilder();
+        if(executorService != null) {
+        		builder = builder.executorService(executorService); //support jaxrs2.0
+        }
         Client client = builder.withConfig(buildConfig()).build();
         this.executorService = executorService;
         return client;
