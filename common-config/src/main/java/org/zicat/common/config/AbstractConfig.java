@@ -106,7 +106,9 @@ public abstract class AbstractConfig<S, T> extends Config<S, T> {
 		return parentConfig == null? schema.unmarshal(stream): schema.unmarshal(parentConfig.getInstance(), stream);
 	}
 	
-	public boolean isModify() {
-		return true;
-	}
+	/**
+	 * check source whether modified
+	 * @return
+	 */
+	public abstract boolean isModify();
 }
