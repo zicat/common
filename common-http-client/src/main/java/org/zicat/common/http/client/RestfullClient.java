@@ -22,7 +22,7 @@ public class RestfullClient {
     private AbstractClientFactory factory;
 
     public RestfullClient(AbstractClientFactory factory) {
-    	this.factory = factory;
+    		this.factory = factory;
     }
 
     
