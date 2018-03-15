@@ -55,8 +55,7 @@ public abstract class AbstractConfig<S, T> extends Config<S, T> {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public <C extends AbstractConfig<?, ?>> T newInstanceAndNotify(AbstractConfigListener<C> listener)
-			throws Exception {
+	public <C extends AbstractConfig<?, ?>> T newInstanceAndNotify(AbstractConfigListener<C> listener) throws Exception {
 
 		newSelfInstance();
 		boolean isModified = isModified();
@@ -72,8 +71,7 @@ public abstract class AbstractConfig<S, T> extends Config<S, T> {
 	 * @throws Exception
 	 * 
 	 */
-	private <C extends AbstractConfig<?, ?>> void newChildrenInstanceAndNotify(AbstractConfigListener<C> listener)
-			throws Exception {
+	private <C extends AbstractConfig<?, ?>> void newChildrenInstanceAndNotify(AbstractConfigListener<C> listener) throws Exception {
 
 		for (AbstractConfig<?, ?> child : children) {
 			child.newInstanceAndNotify(listener);
