@@ -9,7 +9,7 @@ import java.util.List;
  * @param <T>
  */
 public interface NodeSelectHandler<T, P> {
-	
+
 	/**
 	 * 
 	 * @param healthNodes
@@ -17,7 +17,7 @@ public interface NodeSelectHandler<T, P> {
 	 * @return
 	 */
 	public T select(final List<T> healthNodes, P payLoad);
-	
+
 	/**
 	 * 
 	 * @param allNodes

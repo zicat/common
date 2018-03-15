@@ -21,10 +21,10 @@ import org.zicat.common.utils.io.IOUtils;
  *
  * HEAD + BODY
  *
- * HEAD = 4Bytes(read position) + 4Bytes(write position) + 4Bytes(is write finish)
- * BODY = List of Elements
- *    Element = 1-5 Dynamic Byte(Element Length, VINT) + Length bytes(Element Value)
- *    
+ * HEAD = 4Bytes(read position) + 4Bytes(write position) + 4Bytes(is write
+ * finish) BODY = List of Elements Element = 1-5 Dynamic Byte(Element Length,
+ * VINT) + Length bytes(Element Value)
+ * 
  * @author lz31
  * @ThreadSafe
  * @param <E>
@@ -36,7 +36,7 @@ public class Segment<E> implements Closeable {
 	public static final int WRITE_POSITION_START_POINT = 0;
 	public static final int READ_POSITION_START_POINT = 4;
 	public static final int IS_WRITE_FINISH_POSITION_START_POINT = 8;
-	
+
 	public static final int VINT_1_BYTE_LIMIT = (1 << 7);
 	public static final int VINT_2_BYTE_LIMIT = (1 << 14);
 	public static final int VINT_3_BYTE_LIMIT = (1 << 21);
@@ -157,13 +157,13 @@ public class Segment<E> implements Closeable {
 	public static int elementWriteLength(byte[] bs) {
 
 		int length = bs.length;
-		if(length < VINT_1_BYTE_LIMIT) {
+		if (length < VINT_1_BYTE_LIMIT) {
 			return 1 + length;
-		} else if(length < VINT_2_BYTE_LIMIT) {
+		} else if (length < VINT_2_BYTE_LIMIT) {
 			return 2 + length;
-		} else if(length < VINT_3_BYTE_LIMIT) {
+		} else if (length < VINT_3_BYTE_LIMIT) {
 			return 3 + length;
-		} else if(length < VINT_4_BYTE_LIMIT) {
+		} else if (length < VINT_4_BYTE_LIMIT) {
 			return 4 + length;
 		}
 		return 5 + length;
@@ -314,7 +314,7 @@ public class Segment<E> implements Closeable {
 			buffer = buffer.put((byte) ((length & 0x7f) | 0x80));
 			length >>>= 7;
 		}
-		return (ByteBuffer)buffer.put((byte) length).put(bytes).flip();
+		return (ByteBuffer) buffer.put((byte) length).put(bytes).flip();
 	}
 
 	/**

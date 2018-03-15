@@ -11,26 +11,27 @@ import org.glassfish.jersey.client.spi.ConnectorProvider;
  */
 public abstract class JerseyClientFactory extends AbstractClientFactory {
 
-    public JerseyClientFactory(int aSynHttpThreadCount) {
-    	super(aSynHttpThreadCount);
-    }
+	public JerseyClientFactory(int aSynHttpThreadCount) {
+		super(aSynHttpThreadCount);
+	}
 
-    /**
-     * class can implements JerseyClientFactory.class and set property and property value
-     * @return
-     */
-    protected ClientConfig buildDefaultConfig() {
-    	
-    	 ClientConfig config = new ClientConfig();
-         config = config.connectorProvider(newProvider());
-         return config;
-    }
-    
-    protected abstract ConnectorProvider newProvider();
-    
+	/**
+	 * class can implements JerseyClientFactory.class and set property and property
+	 * value
+	 * 
+	 * @return
+	 */
+	protected ClientConfig buildDefaultConfig() {
+
+		ClientConfig config = new ClientConfig();
+		config = config.connectorProvider(newProvider());
+		return config;
+	}
+
+	protected abstract ConnectorProvider newProvider();
+
 	@Override
 	protected Configuration buildConfig() {
 		return buildDefaultConfig();
 	}
 }
-

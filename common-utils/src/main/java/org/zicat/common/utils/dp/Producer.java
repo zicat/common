@@ -10,30 +10,30 @@ import java.util.concurrent.TimeUnit;
  * @param <E>
  */
 public class Producer<E> {
-	
+
 	protected final BlockingQueue<E> blockingQueue;
-	
+
 	public Producer(BlockingQueue<E> blockingQueue) {
-		
-		if(blockingQueue == null)
+
+		if (blockingQueue == null)
 			throw new NullPointerException("blocking queue is null");
-		
+
 		this.blockingQueue = blockingQueue;
 	}
-	
+
 	/**
 	 * 
 	 * @param e
 	 * @return
 	 */
 	public boolean product(E e) {
-		
-		if(e == null)
+
+		if (e == null)
 			return true;
-		
+
 		return blockingQueue.offer(e);
 	}
-	
+
 	/**
 	 * 
 	 * @param e
@@ -43,11 +43,11 @@ public class Producer<E> {
 	 * @throws InterruptedException
 	 */
 	public boolean product(E e, long timeout, TimeUnit unit) throws InterruptedException {
-		
-		if(e == null)
+
+		if (e == null)
 			return true;
-		
-		if(timeout <= 0) {
+
+		if (timeout <= 0) {
 			blockingQueue.put(e);
 			return true;
 		} else {

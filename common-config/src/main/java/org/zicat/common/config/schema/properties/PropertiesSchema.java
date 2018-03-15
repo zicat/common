@@ -15,13 +15,13 @@ import org.zicat.common.config.schema.InputStreamSchema;
  *
  */
 public class PropertiesSchema implements InputStreamSchema<Properties> {
-	
+
 	private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-	
+
 	private final Charset charset;
-	
+
 	public PropertiesSchema(Charset charset) {
-		this.charset = charset == null?DEFAULT_CHARSET: charset;
+		this.charset = charset == null ? DEFAULT_CHARSET : charset;
 	}
 
 	@Override
@@ -33,16 +33,16 @@ public class PropertiesSchema implements InputStreamSchema<Properties> {
 
 	@Override
 	public Properties unmarshal(Properties parentProperties, InputStream source) throws Exception {
-		
+
 		Properties properties = unmarshal(source);
-		
-		if(parentProperties == null)
+
+		if (parentProperties == null)
 			return properties;
-		
+
 		Enumeration<Object> parentKeys = parentProperties.keys();
-		while(parentKeys != null && parentKeys.hasMoreElements()) {
+		while (parentKeys != null && parentKeys.hasMoreElements()) {
 			Object key = parentKeys.nextElement();
-			if(!properties.containsKey(key))
+			if (!properties.containsKey(key))
 				properties.put(key, parentProperties.get(key));
 		}
 		return properties;

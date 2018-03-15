@@ -12,63 +12,63 @@ import java.util.Set;
  */
 public class Collections {
 
-    public static final  <T> Collection<Collection<T>> subCollection(Collection<T> collection, int batchSize) {
+	public static final <T> Collection<Collection<T>> subCollection(Collection<T> collection, int batchSize) {
 
-        if(collection == null)
-            return null;
+		if (collection == null)
+			return null;
 
-        ArrayList<Collection<T>> result = new ArrayList<Collection<T>>();
-        if(collection.isEmpty())
-            return result;
+		ArrayList<Collection<T>> result = new ArrayList<Collection<T>>();
+		if (collection.isEmpty())
+			return result;
 
-        if(batchSize <= 0 || collection.size() < batchSize * 1.5) {
-            result.add(collection);
-            return result;
-        }
+		if (batchSize <= 0 || collection.size() < batchSize * 1.5) {
+			result.add(collection);
+			return result;
+		}
 
-        Iterator<T> it = collection.iterator();
-        ArrayList<T> temp = new ArrayList<T>();
-        while(it.hasNext()) {
-            if(temp.size() < batchSize) {
-                temp.add(it.next());
-            } else {
-                result.add(temp);
-                temp = new ArrayList<T>();
-            }
-        }
+		Iterator<T> it = collection.iterator();
+		ArrayList<T> temp = new ArrayList<T>();
+		while (it.hasNext()) {
+			if (temp.size() < batchSize) {
+				temp.add(it.next());
+			} else {
+				result.add(temp);
+				temp = new ArrayList<T>();
+			}
+		}
 
-        if(!result.contains(temp)) {
-            if(temp.size() > batchSize * 0.5) {
-                result.add(temp);
-            } else {
-                Collection<T> last= result.get(result.size()-1);
-                if(last == null) {
-                    result.add(temp);
-                }else {
-                    last.addAll(temp);
-                }
-            }
-        }
-        return result;
-    }
+		if (!result.contains(temp)) {
+			if (temp.size() > batchSize * 0.5) {
+				result.add(temp);
+			} else {
+				Collection<T> last = result.get(result.size() - 1);
+				if (last == null) {
+					result.add(temp);
+				} else {
+					last.addAll(temp);
+				}
+			}
+		}
+		return result;
+	}
 
-    public static final  <T> List<Set<T>> subSet(Set<T> collection, int batchSize) {
+	public static final <T> List<Set<T>> subSet(Set<T> collection, int batchSize) {
 
-        Collection<Collection<T>> subs = subCollection(collection, batchSize);
-        if(subs == null)
-            return null;
+		Collection<Collection<T>> subs = subCollection(collection, batchSize);
+		if (subs == null)
+			return null;
 
-        List<Set<T>> result = new ArrayList<Set<T>>();
-        if(subs.isEmpty())
-            return result;
+		List<Set<T>> result = new ArrayList<Set<T>>();
+		if (subs.isEmpty())
+			return result;
 
-        for(Collection<T> c: subs) {
-            Set<T> v = new HashSet<T>();
-            for(T t: c) {
-                v.add(t);
-            }
-            result.add(v);
-        }
-        return result;
-    }
+		for (Collection<T> c : subs) {
+			Set<T> v = new HashSet<T>();
+			for (T t : c) {
+				v.add(t);
+			}
+			result.add(v);
+		}
+		return result;
+	}
 }

@@ -8,7 +8,7 @@ package org.zicat.common.config.schema;
  * @param <T>
  */
 public interface Schema<S, T> {
-	
+
 	/**
 	 * 
 	 * @param source
@@ -16,7 +16,7 @@ public interface Schema<S, T> {
 	 * @throws Exception
 	 */
 	T unmarshal(S source) throws Exception;
-	
+
 	/**
 	 * 
 	 * @param parentTarget

@@ -15,36 +15,36 @@ import org.zicat.common.config.listener.AbstractConfigListener;
  * @param <T>
  */
 public class CycleWatcher<T extends AbstractConfig<?, ?>> extends NoWatcher<T> {
-	
+
 	private final CycleWatcherThread cycleWatcherThread;
-	
+
 	public CycleWatcher(int cycleTime) {
 		super();
 		cycleWatcherThread = new CycleWatcherThread(cycleTime);
 		cycleWatcherThread.start();
 	}
-	
+
 	@Override
 	public void close() throws IOException {
-		
+
 		try {
 			super.close();
 		} finally {
 			cycleWatcherThread.close();
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
 	@Override
 	protected void checkClosed() {
-		
+
 		super.checkClosed();
-		if(cycleWatcherThread.isClosed())
+		if (cycleWatcherThread.isClosed())
 			throw new IllegalStateException("CycleWatcher has closed");
 	}
-	
+
 	/**
 	 * 
 	 * @author lz31
@@ -52,35 +52,36 @@ public class CycleWatcher<T extends AbstractConfig<?, ?>> extends NoWatcher<T> {
 	 * @param <T>
 	 */
 	class CycleWatcherThread extends Thread implements Closeable {
-		
+
 		private final AtomicBoolean closed = new AtomicBoolean(false);
 		private final int cycleTime;
-		
+
 		public CycleWatcherThread(int cycleTime) {
 			this.cycleTime = cycleTime;
 		}
-		
+
 		@Override
 		public void run() {
-			
-			while(!closed.get()) {
-				
-				if(!container.isEmpty()) {
+
+			while (!closed.get()) {
+
+				if (!container.isEmpty()) {
 					readLock.lock();
 					try {
-						for(Entry<T, AbstractConfigListener<T>> entry: container.entrySet()) {
-							
+						for (Entry<T, AbstractConfigListener<T>> entry : container.entrySet()) {
+
 							try {
 								T config = entry.getKey();
 								AbstractConfigListener<T> listener = entry.getValue();
 								config.newInstanceAndNotify(listener);
-							} catch (Exception ignore) {}
+							} catch (Exception ignore) {
+							}
 						}
 					} finally {
 						readLock.unlock();
 					}
 				}
-				
+
 				try {
 					Thread.sleep(cycleTime);
 				} catch (InterruptedException e) {
@@ -88,7 +89,7 @@ public class CycleWatcher<T extends AbstractConfig<?, ?>> extends NoWatcher<T> {
 				}
 			}
 		}
-		
+
 		public boolean isClosed() {
 			return closed.get();
 		}

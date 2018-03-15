@@ -21,28 +21,29 @@ import org.zicat.common.utils.io.IOUtils;
 
 /**
  * async appender by file blocking queue
+ * 
  * @author lz31
  *
  */
 public abstract class AsyncAppenderSkeleton extends AppenderSkeleton implements ConsumerHandler<LoggingEvent> {
-	
+
 	protected Producer<LoggingEvent> producer;
 	protected Consumer<LoggingEvent> consumer;
 	protected FileBlockingQueue<LoggingEvent> fileBlockingQueue;
-	
+
 	private String filePath;
 	private int segmentSize = 1024 * 1024 * 1;
 	private int consumerMaxIntervalTimeMillis = 5000;
 	private int consumerMaxCount = 50;
 	private int threadCount = 1;
-	
+
 	@Override
-    public void activateOptions() {
-		
+	public void activateOptions() {
+
 		try {
 			super.activateOptions();
 			boolean cleanUpOnStart = filePath == null || filePath.isEmpty();
-			File file = cleanUpOnStart? File.createTempFile("queue", ".mg"): new File(filePath).getCanonicalFile();
+			File file = cleanUpOnStart ? File.createTempFile("queue", ".mg") : new File(filePath).getCanonicalFile();
 			SegmentFactory<LoggingEvent> factory = new SegmentFactory<>(file, segmentSize, createSerializableHandler(), cleanUpOnStart);
 			fileBlockingQueue = new FileBlockingQueue<>(factory);
 			producer = new Producer<>(fileBlockingQueue);
@@ -53,18 +54,20 @@ public abstract class AsyncAppenderSkeleton extends AppenderSkeleton implements 
 			throw new RuntimeException("init file blocking queue error", e);
 		}
 	}
-	
+
 	/**
-	 * default implements, user can override this method to chose other serialize tools like google protobuf
+	 * default implements, user can override this method to chose other serialize
+	 * tools like google protobuf
+	 * 
 	 * @return
 	 */
 	protected SerializableHandler<LoggingEvent> createSerializableHandler() {
-		
+
 		return new SerializableHandler<LoggingEvent>() {
 
 			@Override
 			public byte[] serialize(LoggingEvent e) throws IOException {
-				
+
 				ByteArrayOutputStream bo = null;
 				ObjectOutputStream os = null;
 				try {
@@ -79,7 +82,7 @@ public abstract class AsyncAppenderSkeleton extends AppenderSkeleton implements 
 
 			@Override
 			public LoggingEvent deserialize(byte[] bs) throws IOException {
-				
+
 				ByteArrayInputStream bi = null;
 				ObjectInputStream oi = null;
 				try {
@@ -101,22 +104,21 @@ public abstract class AsyncAppenderSkeleton extends AppenderSkeleton implements 
 		producer.product(event);
 	}
 
-
 	@Override
 	public void close() {
 		try {
 			try {
-				if(consumer != null) {
+				if (consumer != null) {
 					consumer.close();
 					consumer = null;
 				}
 			} finally {
-				if(fileBlockingQueue != null) {
+				if (fileBlockingQueue != null) {
 					fileBlockingQueue.close();
 					fileBlockingQueue = null;
 				}
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}

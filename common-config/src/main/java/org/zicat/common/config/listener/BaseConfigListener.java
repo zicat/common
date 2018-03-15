@@ -10,7 +10,6 @@ import org.zicat.common.config.AbstractConfig;
  */
 public abstract class BaseConfigListener<C extends AbstractConfig<?, ?>> implements AbstractConfigListener<C> {
 
-
 	@Override
 	public void init(C config) throws Exception {
 		onModify(config);

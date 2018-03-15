@@ -58,7 +58,7 @@ public class AsyncSMTPAppender extends SMTPAppender implements ConsumerHandler<L
 	public void append(LoggingEvent event) {
 		wrapper.append(event);
 	}
-	
+
 	@Override
 	public void close() {
 		try {

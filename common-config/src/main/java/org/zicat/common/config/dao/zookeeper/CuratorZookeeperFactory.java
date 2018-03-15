@@ -16,9 +16,9 @@ import org.zicat.common.utils.io.IOUtils;
  *
  */
 public class CuratorZookeeperFactory {
-	
+
 	private final Map<String, CuratorFramework> zkManager = new ConcurrentHashMap<>();
-	
+
 	/**
 	 * 
 	 * @param hostPort
@@ -27,17 +27,17 @@ public class CuratorZookeeperFactory {
 	 * @return
 	 */
 	protected CuratorFramework getClient(String hostPort, int connectionTimeout, int sessionTimeout) {
-		
+
 		CuratorFramework client = zkManager.get(hostPort);
-		if(client != null)
+		if (client != null)
 			return client;
-		
+
 		synchronized (this) {
-			
+
 			client = zkManager.get(hostPort);
-			if(client != null)
+			if (client != null)
 				return client;
-			
+
 			client = CuratorFrameworkFactory.builder().connectString(hostPort)
 					.retryPolicy(new ExponentialBackoffRetry(1000, 3)).connectionTimeoutMs(connectionTimeout)
 					.sessionTimeoutMs(sessionTimeout).build();
@@ -46,10 +46,9 @@ public class CuratorZookeeperFactory {
 		}
 		return client;
 	}
-	
-	
+
 	public synchronized void shutDown(String hostPort) {
-		
+
 		CuratorFramework client = zkManager.remove(hostPort);
 		IOUtils.closeQuietly(client);
 	}
@@ -58,9 +57,9 @@ public class CuratorZookeeperFactory {
 	 *
 	 */
 	public synchronized void shutDownAll() {
-		
-		if(!zkManager.isEmpty()) {
-			for(Entry<String, CuratorFramework> entry: zkManager.entrySet()) {
+
+		if (!zkManager.isEmpty()) {
+			for (Entry<String, CuratorFramework> entry : zkManager.entrySet()) {
 				IOUtils.closeQuietly(entry.getValue());
 			}
 			zkManager.clear();

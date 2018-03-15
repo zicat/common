@@ -10,28 +10,28 @@ import java.nio.charset.StandardCharsets;
  */
 public class StringSerializableHandler implements SerializableHandler<String> {
 
-    private Charset charset;
+	private Charset charset;
 
-    public StringSerializableHandler(Charset charset) {
+	public StringSerializableHandler(Charset charset) {
 
-        if(charset == null) {
-            throw new NullPointerException("charset is null");
-        }
-        this.charset = charset;
-    }
+		if (charset == null) 
+			throw new NullPointerException("charset is null");
+		
+		this.charset = charset;
+	}
 
-    public StringSerializableHandler() {
+	public StringSerializableHandler() {
 
-        this(StandardCharsets.UTF_8);
-    }
+		this(StandardCharsets.UTF_8);
+	}
 
-    @Override
-    public byte[] serialize(String e) throws IOException {
-        return e.getBytes(charset);
-    }
+	@Override
+	public byte[] serialize(String e) throws IOException {
+		return e.getBytes(charset);
+	}
 
-    @Override
-    public String deserialize(byte[] bs) throws IOException {
-        return new String(bs, charset);
-    }
+	@Override
+	public String deserialize(byte[] bs) throws IOException {
+		return new String(bs, charset);
+	}
 }

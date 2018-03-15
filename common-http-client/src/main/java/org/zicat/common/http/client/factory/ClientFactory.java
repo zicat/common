@@ -7,15 +7,15 @@ import javax.ws.rs.client.Client;
  */
 public interface ClientFactory {
 
-    /**
-     *
-     * @return
-     */
-    Client createClient();
+	/**
+	 *
+	 * @return
+	 */
+	Client createClient();
 
-    /**
-     *
-     */
-    void destory(Client client);
-    
+	/**
+	 *
+	 */
+	void destory(Client client);
+
 }

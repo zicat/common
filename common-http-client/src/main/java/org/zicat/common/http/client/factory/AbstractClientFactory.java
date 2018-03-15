@@ -19,87 +19,89 @@ import org.zicat.common.http.client.RequestHandler;
  *
  */
 public abstract class AbstractClientFactory implements ClientFactory, Closeable {
-	
+
 	private Client client;
-    private ExecutorService executorService;
-    
-    protected final int aSynHttpThreadCount;
-    
+	private ExecutorService executorService;
+
+	protected final int aSynHttpThreadCount;
+
 	private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
 	private final ReadLock readLock = lock.readLock();
 	private final WriteLock writeLock = lock.writeLock();
-    
-    public AbstractClientFactory(int aSynHttpThreadCount) {
-    	
-        this.aSynHttpThreadCount = aSynHttpThreadCount;
-        client = createClient();
-    }
-    
-    @Override
-    public Client createClient() {
-    	
-        ExecutorService executorService = aSynHttpThreadCount > 0? Executors.newFixedThreadPool(aSynHttpThreadCount): null;
-        ClientBuilder builder = ClientBuilder.newBuilder();
-        if(executorService != null) {
-        		builder = builder.executorService(executorService); //support jaxrs2.0
-        }
-        Client client = builder.withConfig(buildConfig()).build();
-        this.executorService = executorService;
-        return client;
-    }
-    
-    /**
-     * class can implements JerseyClientFactory.class and set property and property value
-     * @return
-     */
-    protected abstract Configuration buildConfig();
-    
-    @Override
-    public void close() {
-    	
-    	final WriteLock writeLock = this.writeLock;
+
+	public AbstractClientFactory(int aSynHttpThreadCount) {
+
+		this.aSynHttpThreadCount = aSynHttpThreadCount;
+		client = createClient();
+	}
+
+	@Override
+	public Client createClient() {
+
+		ExecutorService executorService = aSynHttpThreadCount > 0 ? Executors.newFixedThreadPool(aSynHttpThreadCount): null;
+		ClientBuilder builder = ClientBuilder.newBuilder();
+		if (executorService != null) {
+			builder = builder.executorService(executorService); // support jaxrs2.0
+		}
+		Client client = builder.withConfig(buildConfig()).build();
+		this.executorService = executorService;
+		return client;
+	}
+
+	/**
+	 * class can implements JerseyClientFactory.class and set property and property
+	 * value
+	 * 
+	 * @return
+	 */
+	protected abstract Configuration buildConfig();
+
+	@Override
+	public void close() {
+
+		final WriteLock writeLock = this.writeLock;
 		try {
 			writeLock.lock();
 			destory(client);
 		} finally {
 			writeLock.unlock();
 		}
-    }
-    
-    @Override
-    public void destory(Client client) {
-    	
-    		if(client == null)
-    			return;
-			
-		if(client != this.client) {
+	}
+
+	@Override
+	public void destory(Client client) {
+
+		if (client == null)
+			return;
+
+		if (client != this.client) {
 			client.close();
 			return;
 		}
-		
+
 		shutdownExecutorService();
 		client.close();
-    }
-    
-    /**
-     * 
-     */
-    private void shutdownExecutorService() {
-    	
-    		if(executorService != null) {
-            executorService.shutdown();
-            executorService = null;
-        }
-    }
-    
-    /**
+	}
+
+	/**
+	 * 
+	 */
+	private void shutdownExecutorService() {
+
+		if (executorService != null) {
+			executorService.shutdown();
+			executorService = null;
+		}
+	}
+
+	/**
 	 * 
 	 * @param requestHandler
 	 * @return
 	 * @throws Exception
 	 */
 	public <T> T request(RequestHandler<T> requestHandler) throws Exception {
-		
+
 		final ReadLock readLock = this.readLock;
 		try {
 			readLock.lock();
@@ -108,12 +110,12 @@ public abstract class AbstractClientFactory implements ClientFactory, Closeable 
 			readLock.unlock();
 		}
 	}
-    
-    /**
-     * 
-     */
+
+	/**
+	 * 
+	 */
 	public void reload() {
-		
+
 		final WriteLock writeLock = this.writeLock;
 		try {
 			writeLock.lock();

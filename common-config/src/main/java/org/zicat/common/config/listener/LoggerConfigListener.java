@@ -12,9 +12,9 @@ import org.zicat.common.config.AbstractConfig;
  * @param <T>
  */
 public class LoggerConfigListener<C extends AbstractConfig<?, ?>> extends BaseConfigListener<C> {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(LoggerConfigListener.class);
-	
+
 	@Override
 	public void onModify(C config) throws Exception {
 		LOG.info(config.getSource() + " changed");

@@ -13,7 +13,7 @@ public class GrizzlyJerseyClientFactory extends DefaultJerseyClientFactory {
 	public GrizzlyJerseyClientFactory(int aSynHttpThreadCount, int connectionTimeout, int readTimeout) {
 		super(aSynHttpThreadCount, connectionTimeout, readTimeout);
 	}
-	
+
 	@Override
 	protected ConnectorProvider newProvider() {
 		return new GrizzlyConnectorProvider();

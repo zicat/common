@@ -7,12 +7,13 @@ import javax.ws.rs.client.Client;
  */
 public interface RequestHandler<T> {
 
-    /**
-     * request and return response
-     * @param client
-     * @param <T>
-     * @return
-     * @throws Exception
-     */
-    T callback(Client client) throws Exception;
+	/**
+	 * request and return response
+	 * 
+	 * @param client
+	 * @param <T>
+	 * @return
+	 * @throws Exception
+	 */
+	T callback(Client client) throws Exception;
 }

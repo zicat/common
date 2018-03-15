@@ -49,9 +49,9 @@ public abstract class AsyncHttpAppender extends AsyncAppenderSkeleton {
 	public abstract void consume(RestfullClient client, List<LoggingEvent> elements) throws Exception;
 
 	/**
-	 * deal with Exception, if dealException throw exception, data will be roll
-	 * back and consumer again else data will be discard and continue to
-	 * consumer next data
+	 * deal with Exception, if dealException throw exception, data will be roll back
+	 * and consumer again else data will be discard and continue to consumer next
+	 * data
 	 * 
 	 * @param client
 	 * @param elements

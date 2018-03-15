@@ -17,26 +17,26 @@ import org.zicat.common.utils.io.IOUtils;
  * @param <T>
  */
 public class ZookeeperConfig<T> extends AbstractConfig<String, T> {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(ZookeeperConfig.class);
-	
+
 	protected final String zookeeperHost;
 	protected final String zookeeperPath;
 	protected final InputStreamSchema<T> schema;
 	protected final int timeout;
 	protected volatile long lasteditTime = -1;
-	
+
 	public ZookeeperConfig(String zookeeperHost, String zookeeperPath, int timeout, InputStreamSchema<T> schema, AbstractConfig<?, T> parentConfig) {
-		
+
 		super(parentConfig, zookeeperHost + zookeeperPath);
-		
-		if(schema == null)
+
+		if (schema == null)
 			throw new NullPointerException("schema is null");
 
-		if(zookeeperHost == null)
+		if (zookeeperHost == null)
 			throw new NullPointerException("zookeeper host is null");
 
-		if(zookeeperPath == null)
+		if (zookeeperPath == null)
 			throw new NullPointerException("zookeeper path is null");
 
 		this.zookeeperHost = zookeeperHost;
@@ -48,16 +48,16 @@ public class ZookeeperConfig<T> extends AbstractConfig<String, T> {
 	public ZookeeperConfig(String zookeeperHost, String zookeeperPath, int timeout, InputStreamSchema<T> schema) {
 		this(zookeeperHost, zookeeperPath, timeout, schema, null);
 	}
-	
+
 	@Override
 	protected T newInstance(T parentInstance) throws Exception {
-		
+
 		InputStream stream = null;
 		try {
 			ZookeeperClient client = getZkClient();
-			if(!client.checkExists(zookeeperPath))
+			if (!client.checkExists(zookeeperPath))
 				return null;
-			
+
 			byte[] data = client.getData(zookeeperPath);
 			stream = new ByteArrayInputStream(data);
 			return createInstanceBySchema(schema, stream);
@@ -65,7 +65,7 @@ public class ZookeeperConfig<T> extends AbstractConfig<String, T> {
 			IOUtils.closeQuietly(stream);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -81,7 +81,7 @@ public class ZookeeperConfig<T> extends AbstractConfig<String, T> {
 	public final String getZookeeperHost() {
 		return zookeeperHost;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -89,7 +89,7 @@ public class ZookeeperConfig<T> extends AbstractConfig<String, T> {
 	public final String getZookeeperPath() {
 		return zookeeperPath;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -97,13 +97,13 @@ public class ZookeeperConfig<T> extends AbstractConfig<String, T> {
 	public int getTimeout() {
 		return timeout;
 	}
-	
+
 	@Override
 	public boolean isModify() {
-		
+
 		try {
 			long currentModify = getZkClient().getModeMTime(zookeeperPath);
-			if(currentModify != lasteditTime) {
+			if (currentModify != lasteditTime) {
 				lasteditTime = currentModify;
 				return true;
 			}

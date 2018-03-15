@@ -7,19 +7,19 @@ import java.io.IOException;
  * @ThreadSafe
  * @param <E>
  */
-public interface SerializableHandler <E> {
+public interface SerializableHandler<E> {
 
 	/**
 	 *
 	 * @param e
 	 * @return
-     */
+	 */
 	byte[] serialize(E e) throws IOException;
 
 	/**
 	 *
 	 * @param bs
 	 * @return
-     */
+	 */
 	E deserialize(byte[] bs) throws IOException;
 }

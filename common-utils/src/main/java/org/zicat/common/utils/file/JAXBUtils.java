@@ -21,19 +21,19 @@ import org.zicat.common.utils.io.IOUtils;
  *
  */
 public class JAXBUtils {
-	
+
 	/**
 	 * 
 	 * @param xmlFileName
 	 * @param clazz
 	 * @return
-	 * @throws IOException 
-	 * @throws JAXBException 
+	 * @throws IOException
+	 * @throws JAXBException
 	 */
 	public static <T> T unmarshal(String xmlFileName, Class<T> clazz) throws IOException, JAXBException {
 		return unmarshal(xmlFileName, clazz, StandardCharsets.UTF_8);
 	}
-	
+
 	/**
 	 * 
 	 * @param xmlFileName
@@ -44,12 +44,12 @@ public class JAXBUtils {
 	 * @throws JAXBException
 	 */
 	public static <T> T unmarshal(String xmlFileName, Class<T> clazz, Charset charset) throws IOException, JAXBException {
-		
-		if(xmlFileName == null)
+
+		if (xmlFileName == null)
 			throw new NullPointerException("config name is null");
-		
+
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(xmlFileName);
-		if(is == null) {
+		if (is == null) {
 			is = new FileInputStream(new File(xmlFileName).getCanonicalFile());
 		}
 		try {
@@ -58,7 +58,7 @@ public class JAXBUtils {
 			IOUtils.closeQuietly(is);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param is
@@ -70,7 +70,7 @@ public class JAXBUtils {
 	public static <T> T unmarshal(InputStream is, Class<T> clazz) throws IOException, JAXBException {
 		return unmarshal(is, clazz, StandardCharsets.UTF_8);
 	}
-	
+
 	/**
 	 * 
 	 * @param is
@@ -81,14 +81,14 @@ public class JAXBUtils {
 	 * @throws JAXBException
 	 */
 	public static <T> T unmarshal(InputStream is, Class<T> clazz, Charset charset) throws IOException, JAXBException {
-		
-		if(is == null)
+
+		if (is == null)
 			throw new NullPointerException("InputStream is null");
-		
+
 		Reader reader = new InputStreamReader(is, charset);
 		return unmarshal(reader, clazz);
 	}
-	
+
 	/**
 	 * 
 	 * @param reader
@@ -99,16 +99,16 @@ public class JAXBUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T unmarshal(Reader reader, Class<T> clazz) throws IOException, JAXBException {
-		
-		if(reader == null)
+
+		if (reader == null)
 			throw new NullPointerException("reader is null");
-		
-		if(clazz == null)
+
+		if (clazz == null)
 			throw new NullPointerException("class is null");
-		
+
 		JAXBContext context = JAXBContext.newInstance(clazz);
 		Unmarshaller um = context.createUnmarshaller();
 		return (T) um.unmarshal(reader);
 	}
-	
+
 }

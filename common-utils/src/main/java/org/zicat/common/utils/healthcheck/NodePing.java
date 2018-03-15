@@ -7,7 +7,7 @@ package org.zicat.common.utils.healthcheck;
  * @param <T>
  */
 public interface NodePing<T> {
-	
+
 	/**
 	 * 
 	 * @param node
@@ -15,7 +15,7 @@ public interface NodePing<T> {
 	 * @throws Throwable
 	 */
 	public boolean ping(T node) throws Throwable;
-	
+
 	/**
 	 * 
 	 * @return

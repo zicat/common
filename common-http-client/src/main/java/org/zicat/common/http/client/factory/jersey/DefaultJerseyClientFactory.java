@@ -11,20 +11,20 @@ import org.glassfish.jersey.client.spi.ConnectorProvider;
  *
  */
 public class DefaultJerseyClientFactory extends JerseyClientFactory {
-	
+
 	protected int connectionTimeout;
 	protected int readTimeout;
-	
+
 	public DefaultJerseyClientFactory(int aSynHttpThreadCount, int connectionTimeout, int readTimeout) {
-		
+
 		super(aSynHttpThreadCount);
 		this.connectionTimeout = connectionTimeout;
 		this.readTimeout = readTimeout;
 	}
-	
+
 	@Override
 	protected ClientConfig buildDefaultConfig() {
-		
+
 		ClientConfig config = super.buildDefaultConfig();
 		config.property(ClientProperties.CONNECT_TIMEOUT, connectionTimeout);
 		config.property(ClientProperties.READ_TIMEOUT, readTimeout);

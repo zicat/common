@@ -18,47 +18,47 @@ import kafka.producer.ProducerConfig;
  *
  */
 public class AsyncKafkaAppender extends AsyncAppenderSkeleton {
-	
+
 	public static String BROKER_LIST = "metadata.broker.list";
 	public static String REQUEST_ACK = "request.required.acks";
 	public static String SERIALIZAER_CLASS = "serializer.class";
 	public static String PRODUCTER_TYPE = "producer.type";
 
-    
 	private String topic = null;
-    private String brokerList = null;
-    private String serializerClass = "kafka.serializer.StringEncoder";
-    private int requiredNumAcks = Integer.MAX_VALUE;
-    private Producer<String, String> producer = null;
-    
-    @Override
-    public void activateOptions() {
-    	
-    	super.activateOptions();
-    	producer = new Producer<>(initProducerConfig());
-    }
-    
-    @Override
+	private String brokerList = null;
+	private String serializerClass = "kafka.serializer.StringEncoder";
+	private int requiredNumAcks = Integer.MAX_VALUE;
+	private Producer<String, String> producer = null;
+
+	@Override
+	public void activateOptions() {
+
+		super.activateOptions();
+		producer = new Producer<>(initProducerConfig());
+	}
+
+	@Override
 	public void close() {
-    	try {
-    		super.close();
-    	} finally {
-    		if(producer != null)
-    			producer.close();
-    	}
-    }
-    	
+		try {
+			super.close();
+		} finally {
+			if (producer != null)
+				producer.close();
+		}
+	}
+
 	@Override
 	public void consume(List<LoggingEvent> elements) throws Exception {
 		List<KeyedMessage<String, String>> messages = buildMessage(elements);
 		producer.send(messages);
 	}
-	
+
 	private List<KeyedMessage<String, String>> buildMessage(List<LoggingEvent> elements) {
-		
+
 		List<KeyedMessage<String, String>> messages = new ArrayList<>();
-		for(LoggingEvent event: elements) {
-			KeyedMessage<String, String> keyedMessage = new KeyedMessage<String, String>(topic, event.getMessage().toString());
+		for (LoggingEvent event : elements) {
+			KeyedMessage<String, String> keyedMessage = new KeyedMessage<String, String>(topic,
+					event.getMessage().toString());
 			messages.add(keyedMessage);
 		}
 		return messages;
@@ -73,32 +73,32 @@ public class AsyncKafkaAppender extends AsyncAppenderSkeleton {
 	public boolean requiresLayout() {
 		return false;
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
 	protected ProducerConfig initProducerConfig() {
-    	
-        if (brokerList == null)
-        	throw new RuntimeException("The metadata.broker.list property should be specified");
-        
-        if (topic == null) 
-            throw new RuntimeException("topic must be specified by the Kafka log4j appender");
-        
-        Properties properties = new Properties();
-        properties.put(BROKER_LIST, brokerList);
-        properties.put(SERIALIZAER_CLASS, serializerClass);
-        if (requiredNumAcks != Integer.MAX_VALUE) {
-            properties.put(REQUEST_ACK, String.valueOf(requiredNumAcks));
-        } else {
-            properties.put(REQUEST_ACK, "1");
-        }
-        
-        properties.put(PRODUCTER_TYPE, "sync");
-        ProducerConfig config = new ProducerConfig(properties);
-        return config;
-    }
+
+		if (brokerList == null)
+			throw new RuntimeException("The metadata.broker.list property should be specified");
+
+		if (topic == null)
+			throw new RuntimeException("topic must be specified by the Kafka log4j appender");
+
+		Properties properties = new Properties();
+		properties.put(BROKER_LIST, brokerList);
+		properties.put(SERIALIZAER_CLASS, serializerClass);
+		if (requiredNumAcks != Integer.MAX_VALUE) {
+			properties.put(REQUEST_ACK, String.valueOf(requiredNumAcks));
+		} else {
+			properties.put(REQUEST_ACK, "1");
+		}
+
+		properties.put(PRODUCTER_TYPE, "sync");
+		ProducerConfig config = new ProducerConfig(properties);
+		return config;
+	}
 
 	public String getTopic() {
 		return topic;

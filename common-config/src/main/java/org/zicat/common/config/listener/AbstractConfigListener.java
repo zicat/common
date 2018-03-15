@@ -9,16 +9,17 @@ import org.zicat.common.config.AbstractConfig;
  * @param <T>
  */
 public interface AbstractConfigListener<C extends AbstractConfig<?, ?>> {
-	
+
 	/**
 	 * 
 	 * @param config
 	 * @throws Exception
 	 */
 	void onModify(C config) throws Exception;
-	
+
 	/**
 	 * only call ones
+	 * 
 	 * @param config
 	 * @throws Exception
 	 */

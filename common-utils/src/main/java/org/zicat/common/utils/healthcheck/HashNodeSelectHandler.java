@@ -65,6 +65,6 @@ public class HashNodeSelectHandler<T> implements NodeSelectHandler<T, String> {
 
 	@Override
 	public void nodeChanged(List<T> allNodes) {
-		
+
 	}
 }

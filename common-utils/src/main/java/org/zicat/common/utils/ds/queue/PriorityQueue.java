@@ -57,8 +57,8 @@ public abstract class PriorityQueue<T> implements Iterable<T> {
 	}
 
 	/**
-	 * Determines the ordering of objects in this priority queue. Subclasses
-	 * must define this one method.
+	 * Determines the ordering of objects in this priority queue. Subclasses must
+	 * define this one method.
 	 * 
 	 * @return <code>true</code> iff parameter <tt>a</tt> is less than parameter
 	 *         <tt>b</tt>.
@@ -69,16 +69,15 @@ public abstract class PriorityQueue<T> implements Iterable<T> {
 	 * This method can be overridden by extending classes to return a sentinel
 	 * object which will be used by the
 	 * {@link PriorityQueue#PriorityQueue(int,boolean)} constructor to fill the
-	 * queue, so that the code which uses that queue can always assume it's full
-	 * and only change the top without attempting to insert any new object.<br>
+	 * queue, so that the code which uses that queue can always assume it's full and
+	 * only change the top without attempting to insert any new object.<br>
 	 *
-	 * Those sentinel values should always compare worse than any non-sentinel
-	 * value (i.e., {@link #lessThan} should always favor the non-sentinel
-	 * values).<br>
+	 * Those sentinel values should always compare worse than any non-sentinel value
+	 * (i.e., {@link #lessThan} should always favor the non-sentinel values).<br>
 	 *
 	 * By default, this method returns null, which means the queue will not be
-	 * filled with sentinel values. Otherwise, the value returned will be used
-	 * to pre-populate the queue. Adds sentinel values to the queue.<br>
+	 * filled with sentinel values. Otherwise, the value returned will be used to
+	 * pre-populate the queue. Adds sentinel values to the queue.<br>
 	 *
 	 * If this method is extended to return a non-null value, then the following
 	 * usage pattern is recommended:
@@ -95,12 +94,12 @@ public abstract class PriorityQueue<T> implements Iterable<T> {
 	 * pqTop = pq.updateTop();
 	 * </pre>
 	 *
-	 * <b>NOTE:</b> if this method returns a non-null value, it will be called
-	 * by the {@link PriorityQueue#PriorityQueue(int,boolean)} constructor
-	 * {@link #size()} times, relying on a new object to be returned and will
-	 * not check if it's null again. Therefore you should ensure any call to
-	 * this method creates a new instance and behaves consistently, e.g., it
-	 * cannot return null if it previously returned non-null.
+	 * <b>NOTE:</b> if this method returns a non-null value, it will be called by
+	 * the {@link PriorityQueue#PriorityQueue(int,boolean)} constructor
+	 * {@link #size()} times, relying on a new object to be returned and will not
+	 * check if it's null again. Therefore you should ensure any call to this method
+	 * creates a new instance and behaves consistently, e.g., it cannot return null
+	 * if it previously returned non-null.
 	 *
 	 * @return the sentinel object to use to pre-populate the queue, or null if
 	 *         sentinel objects are not supported.
@@ -110,8 +109,8 @@ public abstract class PriorityQueue<T> implements Iterable<T> {
 	}
 
 	/**
-	 * Adds an Object to a PriorityQueue in log(size) time. If one tries to add
-	 * more objects than maxSize from initialize an
+	 * Adds an Object to a PriorityQueue in log(size) time. If one tries to add more
+	 * objects than maxSize from initialize an
 	 * {@link ArrayIndexOutOfBoundsException} is thrown.
 	 *
 	 * @return the new 'top' element in the queue.
@@ -124,12 +123,12 @@ public abstract class PriorityQueue<T> implements Iterable<T> {
 	}
 
 	/**
-	 * Adds an Object to a PriorityQueue in log(size) time. It returns the
-	 * object (if any) that was dropped off the heap because it was full. This
-	 * can be the given parameter (in case it is smaller than the full heap's
-	 * minimum, and couldn't be added), or another object that was previously
-	 * the smallest value in the heap and now has been replaced by a larger one,
-	 * or null if the queue wasn't yet full with maxSize elements.
+	 * Adds an Object to a PriorityQueue in log(size) time. It returns the object
+	 * (if any) that was dropped off the heap because it was full. This can be the
+	 * given parameter (in case it is smaller than the full heap's minimum, and
+	 * couldn't be added), or another object that was previously the smallest value
+	 * in the heap and now has been replaced by a larger one, or null if the queue
+	 * wasn't yet full with maxSize elements.
 	 */
 	public T insertWithOverflow(T element) {
 		if (size < maxSize) {
@@ -154,8 +153,7 @@ public abstract class PriorityQueue<T> implements Iterable<T> {
 	}
 
 	/**
-	 * Removes and returns the least element of the PriorityQueue in log(size)
-	 * time.
+	 * Removes and returns the least element of the PriorityQueue in log(size) time.
 	 */
 	public final T pop() {
 		if (size > 0) {
@@ -171,8 +169,8 @@ public abstract class PriorityQueue<T> implements Iterable<T> {
 	}
 
 	/**
-	 * Should be called when the Object at top changes values. Still log(n)
-	 * worst case, but it's at least twice as fast to
+	 * Should be called when the Object at top changes values. Still log(n) worst
+	 * case, but it's at least twice as fast to
 	 *
 	 * <pre class="prettyprint">
 	 * pq.top().change();
@@ -195,8 +193,7 @@ public abstract class PriorityQueue<T> implements Iterable<T> {
 	}
 
 	/**
-	 * Replace the top of the pq with {@code newTop} and run
-	 * {@link #updateTop()}.
+	 * Replace the top of the pq with {@code newTop} and run {@link #updateTop()}.
 	 */
 	public final T updateTop(T newTop) {
 		heap[1] = newTop;
@@ -217,10 +214,10 @@ public abstract class PriorityQueue<T> implements Iterable<T> {
 	}
 
 	/**
-	 * Removes an existing element currently stored in the PriorityQueue. Cost
-	 * is linear with the size of the queue. (A specialization of PriorityQueue
-	 * which tracks element positions would provide a constant remove time but
-	 * the trade-off would be extra cost to all additions/insertions)
+	 * Removes an existing element currently stored in the PriorityQueue. Cost is
+	 * linear with the size of the queue. (A specialization of PriorityQueue which
+	 * tracks element positions would provide a constant remove time but the
+	 * trade-off would be extra cost to all additions/insertions)
 	 */
 	public final boolean remove(T element) {
 		for (int i = 1; i <= size; i++) {

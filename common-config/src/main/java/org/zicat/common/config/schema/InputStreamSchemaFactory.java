@@ -15,7 +15,7 @@ import org.zicat.common.config.schema.xml.JAXBSchema;
  *
  */
 public class InputStreamSchemaFactory {
-	
+
 	/**
 	 * 
 	 * @param clazz
@@ -25,7 +25,7 @@ public class InputStreamSchemaFactory {
 	public static <T> InputStreamSchema<T> createJAXBSchema(Class<T> clazz, Charset charset) {
 		return new JAXBSchema<>(clazz, charset);
 	}
-	
+
 	/**
 	 * 
 	 * @param clazz
@@ -34,7 +34,7 @@ public class InputStreamSchemaFactory {
 	public static <T> InputStreamSchema<T> createJAXBSchema(Class<T> clazz) {
 		return new JAXBSchema<>(clazz, null);
 	}
-	
+
 	/**
 	 * 
 	 * @param charset
@@ -43,7 +43,7 @@ public class InputStreamSchemaFactory {
 	public static InputStreamSchema<Properties> createPropertiesSchema(Charset charset) {
 		return new PropertiesSchema(charset);
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -51,7 +51,7 @@ public class InputStreamSchemaFactory {
 	public static InputStreamSchema<Properties> createPropertiesSchema() {
 		return new PropertiesSchema(null);
 	}
-	
+
 	/**
 	 * 
 	 * @param type
@@ -62,7 +62,7 @@ public class InputStreamSchemaFactory {
 	public static <T> InputStreamSchema<T> createGsonSchema(Type type, Gson gson, Charset charset) {
 		return new GsonSchema<>(type, gson, charset);
 	}
-	
+
 	/**
 	 * 
 	 * @param type

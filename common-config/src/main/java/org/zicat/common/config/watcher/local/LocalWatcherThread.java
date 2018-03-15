@@ -27,96 +27,96 @@ import org.zicat.common.utils.io.IOUtils;
  *
  */
 public class LocalWatcherThread extends Thread implements Closeable {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(LocalWatcherThread.class);
 	private static final AbstractConfigListener<LocalConfig<?>> DEFAULT_LISTENER = new LoggerConfigListener<>();
-	
+
 	private volatile WatchService watchService;
 	private volatile WatchKey key;
-	private final Map<String, LocalConfigListenerEntry> localConfigContainer = new ConcurrentHashMap<>(); 
+	private final Map<String, LocalConfigListenerEntry> localConfigContainer = new ConcurrentHashMap<>();
 	private final AtomicBoolean closed = new AtomicBoolean(false);
 	private final Path dirPath;
 	private final long delayTime;
-	
+
 	public LocalWatcherThread(Path dirPath) throws IOException {
 		this(dirPath, -1);
 	}
-	
+
 	public LocalWatcherThread(Path dirPath, long delayTime) throws IOException {
-		
+
 		this.dirPath = dirPath;
 		this.delayTime = delayTime;
 		createWatchService();
 	}
-	
+
 	/**
 	 * 
 	 * @param localConfig
 	 * @param configListener
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void addLocalConfig(LocalConfig<?> localConfig, AbstractConfigListener<LocalConfig<?>> configListener) throws Exception {
-		
-		if(localConfig == null)
+
+		if (localConfig == null)
 			return;
-		
-		if(configListener == null)
+
+		if (configListener == null)
 			configListener = DEFAULT_LISTENER;
-		
+
 		String name = localConfig.getName();
 		LocalConfigListenerEntry entry = new LocalConfigListenerEntry(localConfig, configListener, delayTime);
-		
+
 		synchronized (this) {
-			if(!localConfigContainer.containsKey(name)) {
+			if (!localConfigContainer.containsKey(name)) {
 				localConfig.newInstance();
 				configListener.init(localConfig);
 				localConfigContainer.put(name, entry);
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param localConfig
 	 */
 	public void removeLocalConfig(LocalConfig<?> localConfig) {
-		
-		if(localConfig == null)
+
+		if (localConfig == null)
 			return;
-		
+
 		localConfigContainer.remove(localConfig.getName());
 	}
-	
+
 	@Override
 	public void run() {
-		
-		while(!closed.get()) {
-			
+
+		while (!closed.get()) {
+
 			WatchKey key;
 			try {
 				key = watchService.poll(3, TimeUnit.SECONDS);
-				if(key == null)
+				if (key == null)
 					continue;
-				
+
 				for (WatchEvent<?> event : key.pollEvents()) {
-					
+
 					String name = event.context().toString();
 					LocalConfigListenerEntry localConfigEntry = localConfigContainer.get(name);
-					if(localConfigEntry == null)
+					if (localConfigEntry == null)
 						continue;
-					
+
 					try {
 						localConfigEntry.listenerCallback();
-					} catch(Exception ignore) {
+					} catch (Exception ignore) {
 						LOG.error("local watch listener call back error", ignore);
 					}
 				}
-				if(!key.reset()) {
+				if (!key.reset()) {
 					try {
 						key.cancel();
-						IOUtils.closeQuietly(watchService); //close old watch service
+						IOUtils.closeQuietly(watchService); // close old watch service
 						createWatchService();
-					} catch(Exception e) {
+					} catch (Exception e) {
 						LOG.error("Watch Key reset fail and rebuild watch service fail, path:" + dirPath, e);
 					}
 				}
@@ -125,7 +125,7 @@ public class LocalWatcherThread extends Thread implements Closeable {
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -133,7 +133,7 @@ public class LocalWatcherThread extends Thread implements Closeable {
 	public Map<String, LocalConfigListenerEntry> localConfigContainer() {
 		return localConfigContainer;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -141,10 +141,10 @@ public class LocalWatcherThread extends Thread implements Closeable {
 	public boolean isClose() {
 		return closed.get();
 	}
-	
+
 	@Override
 	public void close() throws IOException {
-		
+
 		closed.set(true);
 		try {
 			key.cancel();
@@ -153,13 +153,13 @@ public class LocalWatcherThread extends Thread implements Closeable {
 			IOUtils.closeQuietly(watchService);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @throws IOException
 	 */
 	private void createWatchService() throws IOException {
-		
+
 		this.watchService = FileSystems.getDefault().newWatchService();
 		this.key = dirPath.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
 	}

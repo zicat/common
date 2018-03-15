@@ -13,7 +13,7 @@ public class JettyJerseyClientFactory extends DefaultJerseyClientFactory {
 	public JettyJerseyClientFactory(int aSynHttpThreadCount, int connectionTimeout, int readTimeout) {
 		super(aSynHttpThreadCount, connectionTimeout, readTimeout);
 	}
-	
+
 	@Override
 	protected ConnectorProvider newProvider() {
 		return new JettyConnectorProvider();

@@ -10,8 +10,9 @@ public class IOUtils {
 
 	/**
 	 * close quiet
+	 * 
 	 * @param closeable
-     */
+	 */
 	public static void closeQuietly(Closeable closeable) {
 
 		try {
@@ -24,12 +25,13 @@ public class IOUtils {
 
 	/**
 	 * close quiet
+	 * 
 	 * @param closeables
 	 */
 	public static void closeQuietly(Closeable... closeables) {
 
-		if(closeables != null) {
-			for(Closeable closeable: closeables) {
+		if (closeables != null) {
+			for (Closeable closeable : closeables) {
 				closeQuietly(closeable);
 			}
 		}
@@ -37,12 +39,13 @@ public class IOUtils {
 
 	/**
 	 * close quiet
+	 * 
 	 * @param closeables
 	 */
 	public static void closeQuietly(Collection<Closeable> closeables) {
 
-		if(closeables != null) {
-			for(Closeable closeable: closeables) {
+		if (closeables != null) {
+			for (Closeable closeable : closeables) {
 				closeQuietly(closeable);
 			}
 		}

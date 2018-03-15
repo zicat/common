@@ -14,19 +14,19 @@ import org.zicat.common.utils.file.JAXBUtils;
  * @param <T>
  */
 public class JAXBSchema<T> implements InputStreamSchema<T> {
-	
+
 	private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-	
+
 	private final Class<T> clazz;
 	private final Charset charset;
-	
+
 	public JAXBSchema(Class<T> clazz, Charset charset) {
-		
-		if(clazz == null)
+
+		if (clazz == null)
 			throw new NullPointerException("class is null");
-		
+
 		this.clazz = clazz;
-		this.charset = charset == null?DEFAULT_CHARSET: charset;
+		this.charset = charset == null ? DEFAULT_CHARSET : charset;
 	}
 
 	@Override
