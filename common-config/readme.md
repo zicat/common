@@ -1,5 +1,5 @@
 # Common Config
-> Newegg Common Config provide config parse, watch listener, parent child extend。
+> Common Config provide config parse, watch listener, parent child extend。
 
 ## Class Define:
 ### 1.1 Schema
