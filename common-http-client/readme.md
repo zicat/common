@@ -54,7 +54,7 @@ public abstract class JerseyClientFactory extends AbstractClientFactory {
 ### 4. DefaultJerseyClientFactory
 DefaultJerseyClientFactory extends JerseyClientFactory, create Client by Jersey Default(JDK URLConnection).
 
-### 5. GrizzlyJerseyClientFactory
+### 5. GrizzlyJerseyClientFactory(Recommendation)
 GrizzlyJerseyClientFactory extends JerseyClientFactory, create Client by Grizzly.
 
 ### 6. JettyJerseyClientFactory
